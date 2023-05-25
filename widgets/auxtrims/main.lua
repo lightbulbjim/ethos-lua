@@ -3,9 +3,8 @@
 
 --[[
 TODO:
-  * Auto hide disabled trims.
-  * Name translations.
-  * Readme.
+  * Auto hide disabled trims (needs API).
+  * Translations.
 --]]
 
 local translations = { en = "Aux Trims" }
