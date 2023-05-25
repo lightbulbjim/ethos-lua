@@ -18,8 +18,10 @@ end
 local function create()
   return {
     trims = {
-      left = { enabled = true, member = 4, value = 0 },
-      right = { enabled = true, member = 5, value = 0 },
+      left = { source = system.getSource({ category = CATEGORY_TRIM, member = 4 }),
+               enabled = true, value = 0 },
+      right = { source = system.getSource({ category = CATEGORY_TRIM, member = 5 }),
+                enabled = true, value = 0 },
     },
     showBars = true,
     verticalDisplay = false,
@@ -146,11 +148,13 @@ local function wakeup(widget)
   local changed = false
 
   for _, trim in pairs(widget.trims) do
-    local source = system.getSource({ category = CATEGORY_TRIM, member = trim.member })
+    if trim.source and trim.enabled then
+      local value = trim.source:value()
 
-    if trim.value ~= source:value() then
-      trim.value = source:value()
-      changed = true
+      if trim.value ~= value then
+        trim.value = value
+        changed = true
+      end
     end
   end
 

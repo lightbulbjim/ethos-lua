@@ -15,37 +15,36 @@ local function name()
   return translations[locale] or translations["en"]
 end
 
-local function create()
-  local trims = {
-    leftHorizontal = { enabled = true, member = nil, value = 0 },
-    leftVertical = { enabled = true, member = nil, value = 0 },
-    rightVertical = { enabled = true, member = nil, value = 0 },
-    rightHorizontal = { enabled = true, member = nil, value = 0 },
-  }
+local function makeTrim(member)
+  return { source = system.getSource({ category = CATEGORY_TRIM, member = member }),
+           enabled = true, value = 0 }
+end
 
+local function create()
+  local trims = {}
   local mode = system.getStickMode()
 
   -- Trim member numbers follow RETA, zero indexed
   if mode == 1 then
-    trims.leftHorizontal.member = 0
-    trims.leftVertical.member = 1
-    trims.rightVertical.member = 2
-    trims.rightHorizontal.member = 3
+    trims.leftHorizontal = makeTrim(0)
+    trims.leftVertical = makeTrim(1)
+    trims.rightVertical = makeTrim(2)
+    trims.rightHorizontal = makeTrim(3)
   elseif mode == 2 then
-    trims.leftHorizontal.member = 0
-    trims.leftVertical.member = 2
-    trims.rightVertical.member = 1
-    trims.rightHorizontal.member = 3
+    trims.leftHorizontal = makeTrim(0)
+    trims.leftVertical = makeTrim(2)
+    trims.rightVertical = makeTrim(1)
+    trims.rightHorizontal = makeTrim(3)
   elseif mode == 3 then
-    trims.leftHorizontal.member = 3
-    trims.leftVertical.member = 1
-    trims.rightVertical.member = 2
-    trims.rightHorizontal.member = 0
+    trims.leftHorizontal = makeTrim(3)
+    trims.leftVertical = makeTrim(1)
+    trims.rightVertical = makeTrim(2)
+    trims.rightHorizontal = makeTrim(0)
   elseif mode == 4 then
-    trims.leftHorizontal.member = 3
-    trims.leftVertical.member = 2
-    trims.rightVertical.member = 1
-    trims.rightHorizontal.member = 0
+    trims.leftHorizontal = makeTrim(3)
+    trims.leftVertical = makeTrim(2)
+    trims.rightVertical = makeTrim(1)
+    trims.rightHorizontal = makeTrim(0)
   end
 
   return {
@@ -66,7 +65,7 @@ local function configure(widget)
 
   local function findTrim(member)
     for _, v in pairs(widget.trims) do
-      if v.member == member then
+      if v.source:member() == member then
         return v
       end
     end
@@ -218,11 +217,13 @@ local function wakeup(widget)
   local changed = false
 
   for _, trim in pairs(widget.trims) do
-    local source = system.getSource({ category = CATEGORY_TRIM, member = trim.member })
+    if trim.source and trim.enabled then
+      local value = trim.source:value()
 
-    if trim.value ~= source:value() then
-      trim.value = source:value()
-      changed = true
+      if trim.value ~= value then
+        trim.value = value
+        changed = true
+      end
     end
   end
 
