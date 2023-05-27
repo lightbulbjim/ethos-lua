@@ -175,16 +175,24 @@ local function paint(widget)
     lcd.font(FONT_S)
     vOffset = 0
     hOffset = 25
-  elseif h < 90 then
+  elseif h < 90 and widget.showBars then
     lcd.font(FONT_L)
     vOffset = 5
     hOffset = 10
-  elseif h < 110 then
+  elseif h < 90 then
+    lcd.font(FONT_XL)
+    vOffset = 5
+    hOffset = 10
+  elseif h < 110 and widget.showBars then
     lcd.font(FONT_L)
     vOffset = 15
     hOffset = 10
+  elseif h < 110 then
+    lcd.font(FONT_XL)
+    vOffset = 15
+    hOffset = 10
   else
-    lcd.font(FONT_L)
+    lcd.font(FONT_XL)
     vOffset = 40
     hOffset = 10
   end
