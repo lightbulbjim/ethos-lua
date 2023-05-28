@@ -162,6 +162,20 @@ local function wakeup(widget)
   end
 end
 
+local function read(widget)
+  widget.showBars = storage.read("showBars")
+  widget.verticalDisplay = storage.read("verticalDisplay")
+  widget.trims.left.enabled = storage.read("trims.left.enabled")
+  widget.trims.right.enabled = storage.read("trims.right.enabled")
+end
+
+local function write(widget)
+  storage.write("showBars", widget.showBars)
+  storage.write("verticalDisplay", widget.verticalDisplay)
+  storage.write("trims.left.enabled", widget.trims.left.enabled)
+  storage.write("trims.right.enabled", widget.trims.right.enabled)
+end
+
 local function init()
   system.registerWidget({
     key = "auxtrms",
@@ -169,7 +183,9 @@ local function init()
     create = create,
     configure = configure,
     wakeup = wakeup,
-    paint = paint
+    paint = paint,
+    read = read,
+    write = write,
   })
 end
 

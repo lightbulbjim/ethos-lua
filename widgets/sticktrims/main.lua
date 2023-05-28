@@ -239,6 +239,22 @@ local function wakeup(widget)
   end
 end
 
+local function read(widget)
+  widget.showBars = storage.read("showBars")
+  widget.trims.leftHorizontal.enabled = storage.read("trims.leftHorizontal.enabled")
+  widget.trims.leftVertical.enabled = storage.read("trims.leftVertical.enabled")
+  widget.trims.rightVertical.enabled = storage.read("trims.rightVertical.enabled")
+  widget.trims.rightHorizontal.enabled = storage.read("trims.rightHorizontal.enabled")
+end
+
+local function write(widget)
+  storage.write("showBars", widget.showBars)
+  storage.write("trims.leftHorizontal.enabled", widget.trims.leftHorizontal.enabled)
+  storage.write("trims.leftVertical.enabled", widget.trims.leftVertical.enabled)
+  storage.write("trims.rightVertical.enabled", widget.trims.rightVertical.enabled)
+  storage.write("trims.rightHorizontal.enabled", widget.trims.rightHorizontal.enabled)
+end
+
 local function init()
   system.registerWidget({
     key = "stktrms",
@@ -246,7 +262,9 @@ local function init()
     create = create,
     configure = configure,
     wakeup = wakeup,
-    paint = paint
+    paint = paint,
+    read = read,
+    write = write,
   })
 end
 
