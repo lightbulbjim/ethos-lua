@@ -22,7 +22,7 @@ local function create()
       right = { source = system.getSource({ category = CATEGORY_TRIM, member = 5 }),
                 enabled = true, value = 0 },
     },
-    showBars = true,
+    showBars = false,
     verticalDisplay = false,
   }
 end

@@ -48,7 +48,7 @@ local function create()
 
   return {
     trims = trims,
-    showBars = true,
+    showBars = false,
   }
 end
 
